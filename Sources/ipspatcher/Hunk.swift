@@ -39,8 +39,13 @@ extension Hunk {
 
         let length = 5 + UInt16(slice[slice.startIndex + 3]) << 16 + UInt16(slice[slice.startIndex + 4])
         let payloadLength = length > 0 ? length : 3;
-        let bytes = Array<UInt8>(slice[ slice.startIndex ..< slice.startIndex + Int(payloadLength) ])
+        let predictedPaylodOffset = slice.startIndex + Int(payloadLength)
 
+        guard predictedPaylodOffset < slice.endIndex else {
+            return nil
+        }
+
+        let bytes = Array<UInt8>(slice[ slice.startIndex ..< predictedPaylodOffset ])
         return Hunk.from(bytes: bytes)
     }
 }

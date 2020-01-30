@@ -34,4 +34,17 @@ final class HunkTests: XCTestCase {
         XCTAssertEqual(0x0002, hunk.RLELength)
         XCTAssertEqual(0xFF, hunk.RLEPayload)
     }
+
+    func testHunkWithIncorrectLength() {
+        let bytes: [UInt8] = [
+            0x01, 0x02, 0x03, /* Offset */
+            0x00, 0x02, /* Length */
+            0xFF /* Payload */
+        ]
+
+        bytes.withUnsafeBufferPointer {
+            let hunk = Hunk.from(slice: $0[ $0.startIndex ..< $0.endIndex ])
+            XCTAssertNil(hunk)
+        }
+    }
 }

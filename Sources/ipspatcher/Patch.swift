@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Patch {
+public struct Patch {
     public static let header = "PATCH"
     public static let footer = "EOF"
 
